@@ -20,13 +20,16 @@ public class Event {
     private String name;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:SS")
+    @NotNull(message = "Наименование не должно быть пустым!")
     @Column(name = "date_begin", nullable = false)
     private LocalDateTime dateBegin;
 
     @Column(nullable = false)
+    @NotNull(message = "Наименование не должно быть пустым!")
     private LocalTime duration;
 
     @ManyToOne
+    @NotNull(message = "Наименование не должно быть пустым!")
     @JoinColumn(name = "place_id", nullable = false)
     private Place place;
 

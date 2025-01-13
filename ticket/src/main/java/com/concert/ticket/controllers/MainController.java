@@ -1,12 +1,15 @@
 package com.concert.ticket.controllers;
-import jakarta.validation.Valid;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.concert.ticket.models.Event;
 import com.concert.ticket.models.Participant;
@@ -17,7 +20,7 @@ import com.concert.ticket.repos.ParticipantRepository;
 import com.concert.ticket.repos.PlaceRepository;
 import com.concert.ticket.repos.TicketRepository;
 
-import java.util.Optional;
+import jakarta.validation.Valid;
 
 @Controller
 public class MainController {
@@ -97,9 +100,14 @@ public class MainController {
 	}
 	@PostMapping("/event/add")
 	public String eventAddPost(@ModelAttribute @Valid Event event,
-							   BindingResult bindingResult) {
-		if (bindingResult.hasErrors())
-			return "/event/add";
+							   BindingResult bindingResult, Model model) {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("event", event);
+			Iterable<Place> places = placeRepository.findAll();
+		 model.addAttribute("places", places);
+
+		return "event-add";
+		}
 		Optional<Place> place = placeRepository.findById(event.getPlace().getId());
 		event.setPlace(place.orElseGet(Place::new));
 		eventRepository.save(event);
