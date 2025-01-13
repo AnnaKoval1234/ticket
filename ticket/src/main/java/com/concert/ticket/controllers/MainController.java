@@ -100,13 +100,13 @@ public class MainController {
 	}
 	@PostMapping("/event/add")
 	public String eventAddPost(@ModelAttribute @Valid Event event,
-							   BindingResult bindingResult, Model model) {
+							   BindingResult bindingResult,
+							   Model model) {
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("event", event);
 			Iterable<Place> places = placeRepository.findAll();
-		 model.addAttribute("places", places);
-
-		return "event-add";
+		 	model.addAttribute("places", places);
+			return "event-add";
 		}
 		Optional<Place> place = placeRepository.findById(event.getPlace().getId());
 		event.setPlace(place.orElseGet(Place::new));
@@ -126,7 +126,15 @@ public class MainController {
 		return "event-edit";
 	}
 	@PostMapping("/event/{id}/edit")
-	public String eventEditPost(@ModelAttribute Event event) {
+	public String eventEditPost(@ModelAttribute @Valid Event event,
+								BindingResult bindingResult,
+								Model model) {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("event", event);
+			Iterable<Place> places = placeRepository.findAll();
+			model.addAttribute("places", places);
+			return "event-edit";
+		}
 		eventRepository.save(event);
 		return "redirect:/event";
 	}

@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -17,19 +18,20 @@ public class Event {
 
     @Column(nullable = false)
     @NotEmpty(message = "Наименование не должно быть пустым!")
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я0-9 .,:;!?)(—\"-]+$", message = "В Наименовании могут быть только буквы, цифры, знаки препинания и пробел!")
     private String name;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:SS")
-    @NotNull(message = "Наименование не должно быть пустым!")
+    @NotNull(message = "Дата и время начала не должны быть пустыми!")
     @Column(name = "date_begin", nullable = false)
     private LocalDateTime dateBegin;
 
     @Column(nullable = false)
-    @NotNull(message = "Наименование не должно быть пустым!")
+    @NotNull(message = "Длительность не должна быть пустой!")
     private LocalTime duration;
 
     @ManyToOne
-    @NotNull(message = "Наименование не должно быть пустым!")
+    @NotNull(message = "Площадка не должна быть пустым!")
     @JoinColumn(name = "place_id", nullable = false)
     private Place place;
 

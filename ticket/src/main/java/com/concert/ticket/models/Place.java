@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Place {
@@ -13,9 +15,13 @@ public class Place {
     private Long id;
 
     @Column(nullable = false)
+    @NotEmpty(message = "Наименование не должно быть пустым!")
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я .,)(—\"-]+$", message = "В Наименовании могут быть только буквы, знаки препинания и пробел!")
     private String name;
 
     @Column(nullable = false)
+    @NotEmpty(message = "Адрес не должен быть пустым!")
+    @Pattern(regexp = "^(ул. )[а-яА-Я0-9]+(, )[0-9]{1,3}[а-яА-я]?$", message = "Адрес должен быть записан по шаблону 'ул. Название, 123'!")
     private String address;
 
     public Long getId() {

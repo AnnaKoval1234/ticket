@@ -9,28 +9,28 @@
     <div th:insert="header"></div>
     <div class="container mt-5 mb-5">
         <h1>Добавить мероприятие</h1><br>
-        <form th:object="${event}" th:action="@{/event/add}" method="post">
+        <form th:object="${event}" action="/event/add" method="post">
             <div class="input-group mb-3 has-validation">
                 <span class="input-group-text w-25">Наименование</span>
-                <input type="text" th:field="*{name}" placeholder="Концерт камерной музыки" class="form-control" th:classappend="${#fields.hasErrors('name') or #name == ''} ? 'is-invalid' : 'is-valid'"><br>
-                <div th:classappend="${#fields.hasErrors('name')} ? 'invalid-feedback' : ''" th:errors="*{name}">
-                    Please choose a username.
-                </div>
-                <p style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</p>
+                <input type="text" th:field="*{name}" placeholder="Концерт камерной музыки" class="form-control" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"><br>
+                <div th:classappend="${#fields.hasErrors('name')} ? 'invalid-feedback' : ''" th:errors="*{name}"></div>
             </div>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 has-validation">
                 <span class="input-group-text w-25">Площадка</span>
-                <select th:field="*{place.id}" class="form-control">
+                <select th:field="*{place.id}" class="form-control" th:classappend="${#fields.hasErrors('place.id')} ? 'is-invalid' : ''">
                     <option th:each="p : ${places}" th:value="${p.id}" th:text="${p.name}"></option>
                 </select><br>
+                <div th:classappend="${#fields.hasErrors('place.id')} ? 'invalid-feedback' : ''" th:errors="*{place.id}"></div>
             </div>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 has-validation">
                 <span class="input-group-text w-25">Дата и время начала</span>
-                <input type="datetime-local" th:field="*{dateBegin}" class="form-control"><br>
+                <input type="datetime-local" th:field="*{dateBegin}" class="form-control" th:classappend="${#fields.hasErrors('dateBegin')} ? 'is-invalid' : ''"><br>
+                <div th:classappend="${#fields.hasErrors('dateBegin')} ? 'invalid-feedback' : ''" th:errors="*{dateBegin}"></div>
             </div>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 has-validation">
                 <span class="input-group-text w-25">Длительность</span>
-                <input type="time" th:field="*{duration}" class="form-control"><br>
+                <input type="time" th:field="*{duration}" class="form-control" th:classappend="${#fields.hasErrors('duration')} ? 'is-invalid' : ''"><br>
+                <div th:classappend="${#fields.hasErrors('duration')} ? 'invalid-feedback' : ''" th:errors="*{duration}"></div>
             </div>
             <button type="submit" class="btn btn-success rounded-pill">Сохранить</button>
         </form>
