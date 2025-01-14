@@ -18,7 +18,7 @@ public class Event {
 
     @Column(nullable = false)
     @NotEmpty(message = "Наименование не должно быть пустым!")
-    @Pattern(regexp = "^[a-zA-Zа-яА-Я0-9 .,:;!?)(—\"-]+$",
+    @Pattern(regexp = "^[ёЁa-zA-Zа-яА-Я0-9 .,:;!?)(»«—\"-]+$",
              message = "В Наименовании могут быть только буквы, цифры, знаки препинания и пробел!")
     private String name;
 

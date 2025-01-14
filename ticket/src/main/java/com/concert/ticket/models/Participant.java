@@ -15,13 +15,13 @@ public class Participant {
     private Long id;
 
     @NotEmpty(message = "Имя не должно быть пустым!")
-    @Pattern(regexp = "^[а-яА-Я]+$",
+    @Pattern(regexp = "^[ёЁа-яА-Я]+$",
             message = "В Имени могут быть только буквы!")
     @Column(nullable = false)
     private String name;
 
     @NotEmpty(message = "Фамилия не должна быть пустой!")
-    @Pattern(regexp = "^[а-яА-Я]+$",
+    @Pattern(regexp = "^[ёЁа-яА-Я]+$",
             message = "В Фамилии могут быть только буквы!")
     @Column(nullable = false)
     private String surname;
