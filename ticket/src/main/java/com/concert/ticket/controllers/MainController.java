@@ -1,8 +1,10 @@
 package com.concert.ticket.controllers;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import jakarta.servlet.http.Part;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -99,10 +101,19 @@ public class MainController {
 		return "redirect:/ticket";
 	}
 	@PostMapping("/ticket/{id}/delete")
-	public String ticketDeletePost(@PathVariable (value = "id") Long id) {
-		Optional<Ticket> ticket = ticketRepository.findById(id);
-		ticketRepository.delete(ticket.orElseGet(Ticket::new));
-		return "redirect:/ticket";
+	public String ticketDeletePost(@PathVariable (value = "id") Long id,
+								   Model model) {
+		try {
+			Optional<Ticket> ticket = ticketRepository.findById(id);
+			ticketRepository.delete(ticket.orElseGet(Ticket::new));
+			return "redirect:/ticket";
+		} catch (DataIntegrityViolationException exception) {
+			Iterable<Ticket> tickets = ticketRepository.findAll();
+			model.addAttribute("tickets", tickets);
+			String error = "Невозможно удалить: есть зависимые данные!";
+			model.addAttribute("errors", error);
+			return "ticket";
+		}
 	}
 
 	@GetMapping("/event")
@@ -160,10 +171,19 @@ public class MainController {
 		return "redirect:/event";
 	}
 	@PostMapping("/event/{id}/delete")
-	public String eventDeletePost(@PathVariable (value = "id") Long id) {
-		Optional<Event> event = eventRepository.findById(id);
-		eventRepository.delete(event.orElseGet(Event::new));
-		return "redirect:/event";
+	public String eventDeletePost(@PathVariable (value = "id") Long id,
+								  Model model) {
+		try {
+			Optional<Event> event = eventRepository.findById(id);
+			eventRepository.delete(event.orElseGet(Event::new));
+			return "redirect:/event";
+		} catch (DataIntegrityViolationException exception) {
+			Iterable<Event> events = eventRepository.findAll();
+			model.addAttribute("events", events);
+			String error = "Невозможно удалить: есть зависимые данные!";
+			model.addAttribute("errors", error);
+			return "event";
+		}
 	}
 
 	@GetMapping("/place")
@@ -211,10 +231,19 @@ public class MainController {
 		return "redirect:/place";
 	}
 	@PostMapping("/place/{id}/delete")
-	public String placeDeletePost(@PathVariable (value = "id") Long id) {
-		Optional<Place> place = placeRepository.findById(id);
-		placeRepository.delete(place.orElseGet(Place::new));
-		return "redirect:/place";
+	public String placeDeletePost(@PathVariable (value = "id") Long id,
+								  Model model) {
+		try {
+			Optional<Place> place = placeRepository.findById(id);
+			placeRepository.delete(place.orElseGet(Place::new));
+			return "redirect:/place";
+		} catch (DataIntegrityViolationException exception) {
+			Iterable<Place> places = placeRepository.findAll();
+			model.addAttribute("places", places);
+			String error = "Невозможно удалить: есть зависимые данные!";
+			model.addAttribute("errors", error);
+			return "place";
+		}
 	}
 
 	@GetMapping("/participant")
@@ -262,9 +291,18 @@ public class MainController {
 		return "redirect:/participant";
 	}
 	@PostMapping("/participant/{id}/delete")
-	public String participantDeletePost(@PathVariable (value = "id") Long id) {
-		Optional<Participant> participant = participantRepository.findById(id);
-		participantRepository.delete(participant.orElseGet(Participant::new));
-		return "redirect:/participant";
+	public String participantDeletePost(@PathVariable (value = "id") Long id,
+										Model model) {
+		try {
+			Optional<Participant> participant = participantRepository.findById(id);
+			participantRepository.delete(participant.orElseGet(Participant::new));
+			return "redirect:/participant";
+		} catch (DataIntegrityViolationException exception) {
+			Iterable<Participant> participants = participantRepository.findAll();
+			model.addAttribute("participants", participants);
+			String error = "Невозможно удалить: есть зависимые данные!";
+			model.addAttribute("errors", error);
+			return "participant";
+		}
 	}
 }
