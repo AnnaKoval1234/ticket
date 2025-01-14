@@ -10,17 +10,19 @@
     <div class="container mt-5 mb-5">
         <h1>Добавить билет</h1><br>
         <form th:object="${ticket}" action="/ticket/add" method="post">
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 has-validation">
                 <span class="input-group-text w-25">Мероприятие</span>
-                <select th:field="*{event.id}" class="form-control">
+                <select th:field="*{event.id}" class="form-control" th:classappend="${#fields.hasErrors('event.id')} ? 'is-invalid' : ''">
                     <option th:each="e : ${events}" th:value="${e.id}" th:text="${e.name}"></option><br>
                 </select><br>
+                <div th:classappend="${#fields.hasErrors('event.id')} ? 'invalid-feedback' : ''" th:errors="*{event.id}"></div>
             </div>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 has-validation">
                 <span class="input-group-text w-25">Участник</span>
-                <select th:field="*{participant.id}" class="form-control">
+                <select th:field="*{participant.id}" class="form-control" th:classappend="${#fields.hasErrors('participant.id')} ? 'is-invalid' : ''">
                     <option th:each="p : ${participants}" th:value="${p.id}" th:text="${p.surname + ' ' + p.name}"></option><br>
                 </select><br>
+                <div th:classappend="${#fields.hasErrors('participant.id')} ? 'invalid-feedback' : ''" th:errors="*{participant.id}"></div>
             </div>
             <button type="submit" class="btn btn-success rounded-pill">Сохранить</button>
         </form>

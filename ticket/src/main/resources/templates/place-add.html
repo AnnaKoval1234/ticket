@@ -9,14 +9,16 @@
     <div th:insert="header"></div>
     <div class="container mt-5 mb-5">
         <h1>Добавить площадку</h1><br>
-        <form action="/place/add" method="post">
-            <div class="input-group mb-3">
+        <form th:object="${place}" action="/place/add" method="post">
+            <div class="input-group mb-3 has-validation">
                 <span class="input-group-text w-25">Наименование</span>
-                <input type="text" name="name" placeholder="Пермский театр оперы и балета" class="form-control"><br>
+                <input type="text" th:field="*{name}" placeholder="Пермский театр оперы и балета" class="form-control" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"><br>
+                <div th:classappend="${#fields.hasErrors('name')} ? 'invalid-feedback' : ''" th:errors="*{name}"></div>
             </div>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 has-validation">
                 <span class="input-group-text w-25">Адрес</span>
-                <input type="text" name="address" placeholder="ул. Петропавловская, 25А" class="form-control"><br>
+                <input type="text" th:field="*{address}" placeholder="ул. Петропавловская, 25А" class="form-control" th:classappend="${#fields.hasErrors('address')} ? 'is-invalid' : ''"><br>
+                <div th:classappend="${#fields.hasErrors('address')} ? 'invalid-feedback' : ''" th:errors="*{address}"></div>
             </div>
             <button type="submit" class="btn btn-success rounded-pill">Сохранить</button>
         </form>

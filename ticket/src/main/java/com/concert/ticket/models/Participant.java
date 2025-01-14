@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Participant {
@@ -12,12 +14,21 @@ public class Participant {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotEmpty(message = "Имя не должно быть пустым!")
+    @Pattern(regexp = "^[а-яА-Я]+$",
+            message = "В Имени могут быть только буквы!")
     @Column(nullable = false)
     private String name;
 
+    @NotEmpty(message = "Фамилия не должна быть пустой!")
+    @Pattern(regexp = "^[а-яА-Я]+$",
+            message = "В Фамилии могут быть только буквы!")
     @Column(nullable = false)
     private String surname;
 
+    @NotEmpty(message = "Номер телефона не должен быть пустым!")
+    @Pattern(regexp = "^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$",
+            message = "В Номере телефона могут быть указаны только мобильный или городской номера!")
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
 

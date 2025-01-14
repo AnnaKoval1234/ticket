@@ -16,12 +16,14 @@ public class Place {
 
     @Column(nullable = false)
     @NotEmpty(message = "Наименование не должно быть пустым!")
-    @Pattern(regexp = "^[a-zA-Zа-яА-Я .,)(—\"-]+$", message = "В Наименовании могут быть только буквы, знаки препинания и пробел!")
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я .,)(—\"-]+$",
+             message = "В Наименовании могут быть только буквы, знаки препинания и пробел!")
     private String name;
 
     @Column(nullable = false)
     @NotEmpty(message = "Адрес не должен быть пустым!")
-    @Pattern(regexp = "^(ул. )[а-яА-Я0-9]+(, )[0-9]{1,3}[а-яА-я]?$", message = "Адрес должен быть записан по шаблону 'ул. Название, 123'!")
+    @Pattern(regexp = "^(ул. )[а-яА-Я0-9]+(, )[0-9]{1,3}[а-яА-я]?$",
+             message = "Адрес должен быть записан по шаблону «ул. Незванная, 123»!")
     private String address;
 
     public Long getId() {

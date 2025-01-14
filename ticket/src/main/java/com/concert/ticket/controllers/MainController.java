@@ -1,6 +1,7 @@
 package com.concert.ticket.controllers;
 import java.util.Optional;
 
+import jakarta.servlet.http.Part;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,7 +51,17 @@ public class MainController {
 		return "ticket-add";
 	}
 	@PostMapping("/ticket/add")
-	public String ticketAddPost(@ModelAttribute Ticket ticket) {
+	public String ticketAddPost(@ModelAttribute @Valid Ticket ticket,
+								BindingResult bindingResult,
+								Model model) {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("ticket", ticket);
+			Iterable<Event> events = eventRepository.findAll();
+			Iterable<Participant> participants = participantRepository.findAll();
+			model.addAttribute("events", events);
+			model.addAttribute("participants", participants);
+			return "ticket-add";
+		}
 		Optional<Event> event = eventRepository.findById(ticket.getEvent().getId());
 		ticket.setEvent(event.orElseGet(Event::new));
 		Optional<Participant> participant = participantRepository.findById(ticket.getParticipant().getId());
@@ -73,7 +84,17 @@ public class MainController {
 		return "ticket-edit";
 	}
 	@PostMapping("/ticket/{id}/edit")
-	public String ticketEditPost(@ModelAttribute Ticket ticket) {
+	public String ticketEditPost(@ModelAttribute @Valid Ticket ticket,
+								 BindingResult bindingResult,
+								 Model model) {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("ticket", ticket);
+			Iterable<Event> events = eventRepository.findAll();
+			Iterable<Participant> participants = participantRepository.findAll();
+			model.addAttribute("events", events);
+			model.addAttribute("participants", participants);
+			return "ticket-edit";
+		}
 		ticketRepository.save(ticket);
 		return "redirect:/ticket";
 	}
@@ -153,12 +174,18 @@ public class MainController {
 	}
 	@GetMapping("/place/add")
 	public String placeAddGet(Model model) {
+		Place place = new Place();
+		model.addAttribute("place", place);
 		return "place-add";
 	}
 	@PostMapping("/place/add")
-	public String placeAddPost(@RequestParam String name,
-							   @RequestParam String address) {
-		Place place = new Place(name, address);
+	public String placeAddPost(@ModelAttribute @Valid Place place,
+							   BindingResult bindingResult,
+							   Model model) {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("place", place);
+			return "place-add";
+		}
 		placeRepository.save(place);
 		return "redirect:/place";
 	}
@@ -173,7 +200,13 @@ public class MainController {
 		return "place-edit";
 	}
 	@PostMapping("/place/{id}/edit")
-	public String placeEditPost(@ModelAttribute Place place) {
+	public String placeEditPost(@ModelAttribute @Valid Place place,
+								BindingResult bindingResult,
+								Model model) {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("place", place);
+			return "place-edit";
+		}
 		placeRepository.save(place);
 		return "redirect:/place";
 	}
@@ -191,14 +224,19 @@ public class MainController {
 		return "participant";
 	}
 	@GetMapping("/participant/add")
-	public String participantAddGet() {
+	public String participantAddGet(Model model) {
+		Participant participant = new Participant();
+		model.addAttribute("participant", participant);
 		return "participant-add";
 	}
 	@PostMapping("/participant/add")
-	public String participantAddPost(@RequestParam String surname,
-									 @RequestParam String name,
-									 @RequestParam String phoneNumber) {
-		Participant participant = new Participant(name, surname, phoneNumber);
+	public String participantAddPost(@ModelAttribute @Valid Participant participant,
+									 BindingResult bindingResult,
+									 Model model) {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("participant", participant);
+			return "participant-add";
+		}
 		participantRepository.save(participant);
 		return "redirect:/participant";
 	}
@@ -213,7 +251,13 @@ public class MainController {
 		return "participant-edit";
 	}
 	@PostMapping("/participant/{id}/edit")
-	public String participantEditPost(@ModelAttribute Participant participant) {
+	public String participantEditPost(@ModelAttribute @Valid Participant participant,
+									  BindingResult bindingResult,
+									  Model model) {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("participant", participant);
+			return "participant-edit";
+		}
 		participantRepository.save(participant);
 		return "redirect:/participant";
 	}
@@ -223,6 +267,4 @@ public class MainController {
 		participantRepository.delete(participant.orElseGet(Participant::new));
 		return "redirect:/participant";
 	}
-
-
 }

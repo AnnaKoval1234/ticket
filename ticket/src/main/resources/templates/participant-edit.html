@@ -10,17 +10,20 @@
     <div class="container mt-5 mb-5">
         <h1>Изменить участника</h1><br>
         <form th:object="${participant}" method="post">
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 has-validation">
                 <span class="input-group-text w-25">Фамилия</span>
-                <input type="text" th:field="*{surname}" placeholder="Иванов" class="form-control"><br>
+                <input type="text" th:field="*{surname}" placeholder="Иванов" class="form-control" th:classappend="${#fields.hasErrors('surname')} ? 'is-invalid' : ''"><br>
+                <div th:classappend="${#fields.hasErrors('surname')} ? 'invalid-feedback' : ''" th:errors="*{surname}"></div>
             </div>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 has-validation">
                 <span class="input-group-text w-25">Имя</span>
-                <input type="text" th:field="*{name}" placeholder="Иван" class="form-control"><br>
+                <input type="text" th:field="*{name}" placeholder="Иван" class="form-control" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"><br>
+                <div th:classappend="${#fields.hasErrors('name')} ? 'invalid-feedback' : ''" th:errors="*{name}"></div>
             </div>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 has-validation">
                 <span class="input-group-text w-25">Номер телефона</span>
-                <input class="form-control" th:field="*{phoneNumber}" type="tel" placeholder="+7 987 654-32-10"><br>
+                <input class="form-control" th:field="*{phoneNumber}" type="tel" placeholder="+7 987 654-32-10" th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid' : ''"><br>
+                <div th:classappend="${#fields.hasErrors('phoneNumber')} ? 'invalid-feedback' : ''" th:errors="*{phoneNumber}"></div>
             </div>
             <button type="submit" class="btn btn-success rounded-pill">Сохранить</button>
         </form>
